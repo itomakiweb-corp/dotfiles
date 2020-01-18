@@ -1,0 +1,15 @@
+# If begins with a '-' character, the shell will be started as a login shell.
+shell -${SHELL}
+vbell off
+autodetach on
+startup_message off
+defscrollback 10000
+escape ^Tt
+termcapinfo xterm* is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l # teratermなどでウィンドウサイズが変更されるのを防ぐ
+#cjkwidth on 
+
+#shelltitle '% |zsh'
+#hardstatus alwayslastline "%{= gk}[%m/%d %02c:%s] %{gW} %-w%{= wk}%n %t%{-}%+w %=%{gk}$USER@$HOSTNAME[$LANG] (%l) "
+#hardstatus alwayslastline "%{.Wb}.: %-w%{.RW}%n %t%{-}%+w :. %=[%Y-%m-%d %02c]"
+#hardstatus alwayslastline '%{= .b}%H%{-} %L=%-w%45L>%{=u b.}%n %t%{-}%+w %-17<%=%m/%d %02c:%s'
+hardstatus alwayslastline "[%02c] %`%-w%{=b bw}%n %t%{-}%+w" # 下部に表示するstatusline

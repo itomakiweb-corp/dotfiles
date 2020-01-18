@@ -1,0 +1,17 @@
+{
+    "editor.formatOnType": true,
+    "editor.tabSize": 2,
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.showTabs": true,
+    "editor.formatOnSave": false,
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "git.postCommitCommand": "push",
+    "explorer.confirmDelete": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "vim.handleKeys": {
+        "<C-w>": false
+  }
+}

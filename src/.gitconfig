@@ -1,0 +1,145 @@
+## public
+
+[protocol]
+  # ssh version 2
+  version = 2
+
+
+[credential]
+  # save authorization
+  helper = osxkeychain
+
+
+[fetch]
+  # reflect remote branch
+  prune = true
+
+
+[stash]
+  # show diff on stash
+  showPatch = true
+
+
+[color]
+  # color
+  ui = auto
+
+
+[help]
+  # guess command
+  autocorrect = 1
+
+
+[merge "mergepbx"]
+  name = Xcode project files merger
+
+  driver = mergepbx %O %A %B
+
+
+## private
+# TODO for org member
+
+[user]
+  # id
+  name = Hide Charo (ひで)
+
+  # NOTE when change account, set config at local
+  # cd "${MY_GIT}/test"
+  # git config user.email "59493482+hidecharo@users.noreply.github.com"
+  email = 59493482+hidecharo@users.noreply.github.com
+
+
+[core]
+  # global ignore
+  excludesfile = ${HOME}/.gitignore
+
+  # input
+  # -q: visual bell
+  pager = less -+S -M -q
+  editor = "if which mvim; then e='mvim -vf'; else e='vim -f'; fi; ${e}"
+  autocrlf = input
+
+
+[alias]
+  # alias
+  al = config --get-regexp alias.*
+
+  # status
+  st = status
+
+  # branch
+  br = branch
+
+  # branches sorted by updatedAt
+  bl = for-each-ref --sort=committerdate refs/ --format='\
+%(HEAD) \
+%(color:yellow)%(refname:short)%(color:reset) - \
+%(color:red)%(objectname:short)%(color:reset) - \
+%(contents:subject) - %(authorname) \
+(%(color:green)%(committerdate:relative)%(color:reset)) \
+'
+
+  # show current branch
+  #bs = rev-parse --abbrev-ref HEAD
+  bs = name-rev --name-only HEAD
+
+  # create branch
+  bc = checkout -b
+
+  # delete merged branches
+  #bd = !git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d
+  bd = !git branch --merged | grep -v '*' | xargs git branch -d
+
+  # checkout
+  #co = checkout
+  # required: brew install fzf
+  co = "!f() { args=$@; if [ -z \"$args\" ]; then branch=$(git branch --all | grep -v HEAD | fzf --preview 'echo {} | cut -c 3- | xargs git log --color=always' | cut -c 3-); git checkout $(echo $branch | sed 's#remotes/[^/]*/##'); else git checkout $args; fi }; f"
+
+  # diff
+  di = diff --ignore-all-space --color-words 
+  ds = diff --ignore-all-space --color-words --staged
+
+  # reset
+  undo = reset --hard HEAD
+
+  # add untracked files
+  au = !git ls-files --others --exclude-standard | xargs git add
+  aa = add .
+
+  # commit
+  ci = commit -v
+  ca = !git aa && git ci -a
+  uc = reset --soft HEAD^
+
+  # push
+  ps = push origin HEAD
+
+  # cherry-pick
+  cp = cherry-pick
+
+  # stash
+  # sl = stash list -p
+  # required: brew install fzf
+  sl = !git stash list | fzf --preview 'echo {} | grep -o stash@{.*} | xargs git stash show -p --color=always' --height 90% | grep -o stash@{.*}
+  ss = stash show
+  # [:space:]: POSIX character class, All whitespace characters, including line breaks
+  # https://docs.ruby-lang.org/ja/2.3.0/doc/spec=2fregexp.html
+  # -u: --include-untracked
+  sp = !summary=$(git status --short | perl -pe s/[[:space:]]+/-/g) && \
+    git stash push -u -m "$(date '+%Y%m%d-%H%M%S-')$(echo $summary)"
+  spop = stash pop
+  sdrop = stash drop
+
+  # clean
+  cl = clean -i
+
+  # log
+  # %ai : YYYY-MM-DD HH:mm:ss
+  # %s  : subject
+  # %an : author name
+  # %h  : abbreviated commit hash
+  # %d  : ref names
+  l  = log --pretty=format:'%C(reset)%ai %C(green)%s %C(reset)%an %C(blue)%h%C(red)%d%C(reset)' -n 24 --graph
+  ls = log --pretty=format:'%C(reset)%ai %C(green)%s %C(reset)%an %C(blue)%h%C(red)%d%C(reset)' -n 24 --graph
+  ll = log --pretty=fuller -p
+  lt = log --pretty=format:'%C(reset)%ai %C(green)%s %C(reset)%an %C(blue)%h%C(red)%d%C(reset)' -n 48 --reverse

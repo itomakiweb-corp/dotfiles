@@ -1,0 +1,11 @@
+## main
+
+### sound
+
+# http://archive.linux.or.jp/JF/JFdocs/Visual-Bell/applications.html
+set bell-style visible
+set prefer-visible-bell
+
+### input
+
+set completion-ignore-case on
