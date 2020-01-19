@@ -1,0 +1,34 @@
+name: CI
+
+on: [push]
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    container: ubuntu:latest
+    # https://help.github.com/ja/actions/automating-your-workflow-with-github-actions/using-environment-variables
+    # HOME: /github/home
+    # GITHUB_WORKSPACE: /home/runner/work/my-repo-name/my-repo-name
+    # https://help.github.com/ja/actions/automating-your-workflow-with-github-actions/contexts-and-expression-syntax-for-github-actions
+    # github.workspace
+    steps:
+    # https://github.com/actions/checkout
+    - uses: actions/checkout@v1
+      with:
+        # Relative path under $GITHUB_WORKSPACE to place the repository
+        path: ../../../../../github/home/git/dotfiles
+    - name: Install required packages
+      run: apt update && apt install -y git sudo
+    - name: Install dotfiles
+      run: echo ${{ GITHUB_WORKSPACE }}, ${GITHUB_WORKSPACE}, ${{ github.workspace }}
+#      run: bin/install.sh
+
+#  centos:
+#    runs-on: ubuntu-latest
+#    container: centos:latest
+#    steps:
+#    - uses: actions/checkout@v1
+#    - name: Install required packages
+#      run: yum install -y git sudo
+#    - name: Install dotfiles
+#      run: bin/install.sh
