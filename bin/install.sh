@@ -120,13 +120,29 @@ elif [[ "${uname}" =~ "Darwin" ]]; then
 
 elif [[ "${uname}" =~ "Linux" ]]; then
 
+  # update os
+  #sudo apt update
+  #sudo apt upgrade
+
   # mkdir
   mkdir -p "${MY_OLD}"
   ln -sfnv "/mnt/chromeos/MyFiles/Downloads" "${MY_REF}"
   ln -sfnv "/mnt/chromeos/GoogleDrive/MyDrive/z01-private01-docs" "${MY_VAR}"
 
   # install Screen
-  sudo apt-get install screen
+  sudo apt install screen
+
+  # install Japanese IME
+  # https://www.axon.jp/entry/2018/10/18/201812
+  #sudo apt install fonts-noto-cjk
+  #sudo apt install fcitx # optional
+  #sudo apt install fcitx-mozc
+  #sudo apt install fcitx-lib* # optional
+  #im-config # optional
+  #fcitx-autostart
+  #fcitx-configtool
+  # select "+", unselect "Only Show Current Language", Search"Mozc"
+  # select "Global Config" # optional
 
   # install Visual Studio Code
   # TODO
