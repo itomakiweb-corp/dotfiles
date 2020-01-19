@@ -14,8 +14,17 @@ export EDITOR="vim"
 export HISTSIZE="5000"
 export HISTFILESIZE="5000"
 export HISTCONTROL="ignoreboth"
-export HISTIGNORE="?:??:???:exit"
+#export HISTIGNORE="?:??:???:exit"
+export HISTIGNORE="exit"
 export HISTTIMEFORMAT="%Y-%m-%d %T "
+
+# share history for multi terminal like screen
+shopt -s histappend
+shopt -s histreedit
+shopt -s histverify
+shopt -s cmdhist
+shopt -s lithist
+PROMPT_COMMAND='history -a; history -c; history -r'
 
 ### __git_ps1
 
