@@ -17,7 +17,7 @@ jobs:
     - name: Install required packages
       run: apt update && apt install -y git sudo
     - name: Copy repository
-      run: cp -R ${{ github.workspace }} ${HOME}
+      run: ls ${GITHUB_WORKSPACE} ${HOME};cp -R ${GITHUB_WORKSPACE}, ${HOME}
     - name: Install dotfiles
       run: bin/install.sh
 
