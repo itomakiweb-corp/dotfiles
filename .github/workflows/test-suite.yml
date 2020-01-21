@@ -20,7 +20,7 @@ jobs:
     - name: Install required packages
       run: apt update && apt install -y git sudo
     - name: Install dotfiles
-      run: echo ${{ GITHUB_WORKSPACE }}, ${GITHUB_WORKSPACE}, ${{ github.workspace }}
+      run: echo ${GITHUB_WORKSPACE}, ${{ github.workspace }}
 #      run: bin/install.sh
 
 #  centos:
