@@ -171,15 +171,15 @@ elif [[ "${uname}" =~ "Linux" ]]; then
 
   # install yarn
   # https://yarnpkg.com/ja/docs/install#alternatives-stable
-  npm install -g yarn
+  #npm install -g yarn
 
   # install gatsby
   # https://www.gatsbyjs.org/docs/quick-start
-  npm install -g gatsby-cli
+  #npm install -g gatsby-cli
 
   # install Firebase
   # https://firebase.google.com/docs/cli
-  npm install -g firebase-tools
+  #npm install -g firebase-tools
   #firebase login --no-localhost
   #firebase projects:list
 
