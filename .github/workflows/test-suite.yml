@@ -14,9 +14,6 @@ jobs:
     steps:
     # https://github.com/actions/checkout
     - uses: actions/checkout@v1
-      with:
-        # Relative path under $GITHUB_WORKSPACE to place the repository
-        path: ../../../../../github/home/git/dotfiles
     - name: Install required packages
       run: apt update && apt install -y git sudo
     - name: Install dotfiles
