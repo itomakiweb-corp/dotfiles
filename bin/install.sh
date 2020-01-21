@@ -153,6 +153,15 @@ elif [[ "${uname}" =~ "Linux" ]]; then
 
   # install Flutter
   # TODO
+  # https://flutter.dev/docs/get-started/web
+  #flutter channel beta
+  #flutter upgrade
+  #flutter config --enable-web
+  #flutter devices
+  #flutter create web
+  #cd web
+  #flutter run -d chrome
+  #flutter build web
 
   # install Node Version Manager (LTS Node.js + npm)
   # TODO change to use manual install because installer overwrite bashrc
@@ -167,6 +176,12 @@ elif [[ "${uname}" =~ "Linux" ]]; then
   # install gatsby
   # https://www.gatsbyjs.org/docs/quick-start
   npm install -g gatsby-cli
+
+  # install Firebase
+  # https://firebase.google.com/docs/cli
+  npm install -g firebase-tools
+  #firebase login --no-localhost
+  #firebase projects:list
 
 fi
 
