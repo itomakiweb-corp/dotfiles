@@ -7,9 +7,10 @@ MY_GIT="${HOME}/git"
 MY_VAR="${HOME}/var"
 MY_REF="${HOME}/ref"
 MY_OLD="${HOME}/old"
+MY_FLUTTER="${HOME}/flutter"
 PJ_TOP="${MY_GIT}/dotfiles"
 PJ_SRC="${PJ_TOP}/src"
-PJ_GIT="git@github.com:itomakiweb-corp/dotfiles.git"
+PJ_GIT="https://github.com/itomakiweb-corp/dotfiles.git"
 
 
 ## init
@@ -29,6 +30,21 @@ skipSs="${2:---skip-ss}"
 
 
 ## function
+
+function gitPullOrClone()
+{
+  local repositoryUrl="${1:?}"
+  local repositoryDir="$(echo ${repositoryUrl##*/} | sed 's/.git//g')"
+
+  if [ -d "${repositoryDir}" ]; then
+    cd "${repositoryDir}"
+    git pull
+  else
+    mkdir -p "${MY_GIT}"
+    cd "${MY_GIT}"
+    git clone "${repositoryUrl}"
+  fi
+}
 
 function symbolicLink()
 {
@@ -50,18 +66,76 @@ function symbolicLink()
   done
 }
 
+function installNvm()
+{
+  # install NVM (Node Version Manager)
+  # https://github.com/nvm-sh/nvm
+
+  # if use installer, installer append .bashrc
+  # https://github.com/nvm-sh/nvm#install--update-script
+  #curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+
+  # so install manually here
+  # https://github.com/nvm-sh/nvm#manual-install
+  export NVM_DIR="${HOME}/.config/nvm"
+  gitPullOrClone "https://github.com/nvm-sh/nvm.git" "${NVM_DIR}"
+  cd "${NVM_DIR}"
+  git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
+  \. "${NVM_DIR}/nvm.sh"
+
+  # install Node.js + npm (version: LTS = Long Term Support)
+  nvm install --lts
+
+  # ref command
+  #nvm ls-remote --lts
+  #nvm install node # "node" is an alias for the latest version (not LTS like v13.7.0)
+  #nvm use --lts
+  #nvm alias default v12.14.1
+
+  # install yarn
+  # https://yarnpkg.com/ja/docs/install#alternatives-stable
+  npm install -g yarn
+}
+
+function installFlutter()
+{
+  # install Flutter
+  # https://flutter.dev/docs/get-started/install/linux
+  gitPullOrClone "https://github.com/flutter/flutter.git"
+  cd "${MY_FLUTTER}"
+  flutter precache
+  flutter doctor
+
+  # Enable Web (beta at 20200125)
+  # https://flutter.dev/docs/get-started/web
+  flutter channel beta
+  flutter upgrade
+  flutter config --enable-web
+  flutter devices
+
+  # ref command
+  #flutter create mypj
+  #cd mypj
+  #flutter run -d chrome
+  #flutter build web
+}
+
+function installFirebase()
+{
+  # install Firebase
+  # https://firebase.google.com/docs/cli
+  npm install -g firebase-tools
+
+  # ref command
+  #firebase login --no-localhost
+  #firebase projects:list
+}
+
 
 ## main
 
-# git pull or clone
-if [ -d "${PJ_TOP}" ]; then
-  cd "${PJ_TOP}"
-  git pull
-else
-  mkdir -p "${MY_GIT}"
-  cd "${MY_GIT}"
-  git clone "${PJ_GIT}"
-fi
+# get repository
+gitPullOrClone "${PJ_GIT}"
 
 # set symbolicLink
 symbolicLink "${PJ_SRC}" "${HOME}"
@@ -116,6 +190,18 @@ elif [[ "${uname}" =~ "Darwin" ]]; then
     killall SystemUIServer
   fi
 
+  installNvm
+
+  installFlutter
+  # at 20200125 work arround
+  # idevice_id cannot run on catalina #42302
+  # https://github.com/flutter/flutter/issues/42302#issuecomment-539852516
+  sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/libimobiledevice/idevice_id
+  sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/libimobiledevice/ideviceinfo
+  sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/usbmuxd/iproxy
+
+  installFirebase
+
 ### Linux
 
 elif [[ "${uname}" =~ "Linux" ]]; then
@@ -144,6 +230,12 @@ elif [[ "${uname}" =~ "Linux" ]]; then
   # select "+", unselect "Only Show Current Language", Search"Mozc"
   # select "Global Config" # optional
 
+  installNvm
+
+  installFlutter
+
+  installFirebase
+
   # install Visual Studio Code
   # TODO
   # https://github.com/VSCodeVim/Vim
@@ -151,37 +243,9 @@ elif [[ "${uname}" =~ "Linux" ]]; then
   # install Android Studio
   # TODO
 
-  # install Flutter
-  # TODO
-  # https://flutter.dev/docs/get-started/web
-  #flutter channel beta
-  #flutter upgrade
-  #flutter config --enable-web
-  #flutter devices
-  #flutter create web
-  #cd web
-  #flutter run -d chrome
-  #flutter build web
-
-  # install Node Version Manager (LTS Node.js + npm)
-  # TODO change to use manual install because installer overwrite bashrc
-  #curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-  #nvm install --lts
-  #nvm alias default v12.14.1
-
-  # install yarn
-  # https://yarnpkg.com/ja/docs/install#alternatives-stable
-  #npm install -g yarn
-
   # install gatsby
   # https://www.gatsbyjs.org/docs/quick-start
   #npm install -g gatsby-cli
-
-  # install Firebase
-  # https://firebase.google.com/docs/cli
-  #npm install -g firebase-tools
-  #firebase login --no-localhost
-  #firebase projects:list
 
 fi
 
