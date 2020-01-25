@@ -98,7 +98,9 @@ function reloadBashProfile()
 {
   "${doReloadBashProfile}" || return 0
 
+  set +e
   \source "${HOME}/.bash_profile"
+  set -e
 }
 
 function installNvm()
