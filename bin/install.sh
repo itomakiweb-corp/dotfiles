@@ -51,7 +51,7 @@ done
 function gitPullOrClone()
 {
   local repositoryUrl="${1:?}"
-  local repositoryDir="$(echo ${repositoryUrl##*/} | sed 's/.git//g')"
+  local repositoryDir="${MY_GIT}/$(echo ${repositoryUrl##*/} | sed 's/.git//g')"
 
   if [ -d "${repositoryDir}" ]; then
     cd "${repositoryDir}"
@@ -85,7 +85,7 @@ function symbolicLink()
 
 function installNvm()
 {
-  "${doUpdateNvm}" || return
+  "${doUpdateNvm}" || return 0
 
   # install NVM (Node Version Manager)
   # https://github.com/nvm-sh/nvm
@@ -118,7 +118,7 @@ function installNvm()
 
 function installFlutter()
 {
-  "${doUpdateFlutter}" || return
+  "${doUpdateFlutter}" || return 0
 
   # install Flutter
   # https://flutter.dev/docs/get-started/install/linux
@@ -143,7 +143,7 @@ function installFlutter()
 
 function installFirebase()
 {
-  "${doUpdateFirebase}" || return
+  "${doUpdateFirebase}" || return 0
 
   # install Firebase
   # https://firebase.google.com/docs/cli
