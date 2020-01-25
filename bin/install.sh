@@ -10,7 +10,11 @@ MY_OLD="${HOME}/old"
 MY_FLUTTER="${HOME}/flutter"
 PJ_TOP="${MY_GIT}/dotfiles"
 PJ_SRC="${PJ_TOP}/src"
-PJ_GIT="https://github.com/itomakiweb-corp/dotfiles.git"
+if [ -n "${GITHUB_TOKEN}" ]; then
+  PJ_GIT="https://${GITHUB_TOKEN}@github.com/itomakiweb-corp/dotfiles.git"
+else
+  PJ_GIT="https://github.com/itomakiweb-corp/dotfiles.git"
+fi
 
 
 ## init
