@@ -202,8 +202,6 @@ if [[ "${uname}" =~ "MINGW" ]]; then
 
 elif [[ "${uname}" =~ "Darwin" ]]; then
 
-  reloadBashProfile
-
   # install brew
   if which brew; then
     :
@@ -239,6 +237,8 @@ elif [[ "${uname}" =~ "Darwin" ]]; then
     killall SystemUIServer
   fi
 
+  reloadBashProfile
+
   installNvm
 
   installFlutter
@@ -248,8 +248,6 @@ elif [[ "${uname}" =~ "Darwin" ]]; then
 ### Linux
 
 elif [[ "${uname}" =~ "Linux" ]]; then
-
-  reloadBashProfile
 
   # update os
   #sudo apt update
@@ -274,6 +272,8 @@ elif [[ "${uname}" =~ "Linux" ]]; then
   #fcitx-configtool
   # select "+", unselect "Only Show Current Language", Search"Mozc"
   # select "Global Config" # optional
+
+  reloadBashProfile
 
   installNvm
 
