@@ -192,7 +192,7 @@ elif [[ "${uname}" =~ "Darwin" ]]; then
   # update brew
   if "${doUpdateBrew}"; then
     brew update
-    brew upgrade --all
+    #brew upgrade
     brew install bash-completion git macvim neovim pstree fzf
     # brew cask install docker google-chrome google-japanese-ime slack atom
     brew doctor
