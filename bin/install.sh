@@ -56,6 +56,7 @@ function gitPullOrClone()
 {
   local repositoryUrl="${1:?}"
   local repositoryDir="${MY_GIT}/$(echo ${repositoryUrl##*/} | sed 's/.git//g')"
+  local targetDir="${2}"
 
   if [ -d "${repositoryDir}" ]; then
     cd "${repositoryDir}"
@@ -63,7 +64,11 @@ function gitPullOrClone()
   else
     mkdir -p "${MY_GIT}"
     cd "${MY_GIT}"
-    git clone "${repositoryUrl}"
+    if [ -n "${targetDir}" ]; then
+      git clone "${repositoryUrl}" "${targetDir}"
+    else
+      git clone "${repositoryUrl}"
+    fi
   fi
 }
 
