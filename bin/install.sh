@@ -98,9 +98,9 @@ function reloadBashProfile()
 {
   "${doReloadBashProfile}" || return 0
 
-  set +e
+  set +euo
   \source "${HOME}/.bash_profile"
-  set -e
+  set -euo pipefail
 }
 
 function installNvm()
