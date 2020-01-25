@@ -175,6 +175,14 @@ alias b="vim -S ${MY_VIM_SESSION}"
 
 ### reload
 
+# update dotfiles, apps (if up -a)
+function up()
+{
+  "${MY_DOTFILES_INSTALL}" "${@}"
+  r
+}
+export -f up
+
 # flutter
 function rf()
 {
