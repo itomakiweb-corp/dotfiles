@@ -20,13 +20,30 @@ PJ_GIT="https://github.com/itomakiweb-corp/dotfiles.git"
 # o pipefail: throw error if pipefail
 set -euo pipefail
 
-# display command
-set -x
-
-# default skip
-# TODO use getopt etc
-skipBrew="${1:---skip-brew}"
-skipSs="${2:---skip-ss}"
+# options: default skip
+doUpdateBrew="false"
+doUpdateSettingsScreenshot="false"
+doUpdateNvm="false"
+doUpdateFlutter="false"
+doUpdateFirebase="false"
+while [ $# -gt 0 ]; do
+  case "${1}" in
+    -v|--verbose)
+      # display command
+      set -x
+      ;;
+    -a|--all)
+      doUpdateBrew="true"
+      doUpdateSettingsScreenshot="true"
+      doUpdateNvm="true"
+      doUpdateFlutter="true"
+      doUpdateFirebase="true"
+      ;;
+    *)
+      ;;
+  esac
+  shift
+done
 
 
 ## function
@@ -68,6 +85,8 @@ function symbolicLink()
 
 function installNvm()
 {
+  "${doUpdateNvm}" || return
+
   # install NVM (Node Version Manager)
   # https://github.com/nvm-sh/nvm
 
@@ -99,6 +118,8 @@ function installNvm()
 
 function installFlutter()
 {
+  "${doUpdateFlutter}" || return
+
   # install Flutter
   # https://flutter.dev/docs/get-started/install/linux
   gitPullOrClone "https://github.com/flutter/flutter.git"
@@ -122,6 +143,8 @@ function installFlutter()
 
 function installFirebase()
 {
+  "${doUpdateFirebase}" || return
+
   # install Firebase
   # https://firebase.google.com/docs/cli
   npm install -g firebase-tools
@@ -163,18 +186,17 @@ elif [[ "${uname}" =~ "Darwin" ]]; then
   fi
 
   # update brew
-  if [[ "${skipBrew}" != "--skip-brew" ]]; then
+  if "${doUpdateBrew}"; then
     brew update
     brew upgrade --all
     brew install bash-completion git macvim neovim pstree fzf
-    brew cask install docker # google-chrome google-japanese-ime slack atom
+    # brew cask install docker google-chrome google-japanese-ime slack atom
     brew doctor
   fi
 
   # set screencapture
-  if [[ "${skipSs}" != "--skip-ss" ]]; then
-    # https://ichitaso.com/mac/tips-for-os-x-screenshot/
-
+  # https://ichitaso.com/mac/tips-for-os-x-screenshot/
+  if "${doUpdateSettingsScreenshot}"; then
     defaults write com.apple.screencapture location "${MY_VAR}"
     defaults write com.apple.screencapture name "$(hostname)"
     defaults write com.apple.screencapture include-date -bool true
@@ -193,12 +215,14 @@ elif [[ "${uname}" =~ "Darwin" ]]; then
   installNvm
 
   installFlutter
-  # at 20200125 work arround
-  # idevice_id cannot run on catalina #42302
-  # https://github.com/flutter/flutter/issues/42302#issuecomment-539852516
-  sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/libimobiledevice/idevice_id
-  sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/libimobiledevice/ideviceinfo
-  sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/usbmuxd/iproxy
+  if "${doUpdateFlutter}"; then
+    # at 20200125 work arround
+    # idevice_id cannot run on catalina #42302
+    # https://github.com/flutter/flutter/issues/42302#issuecomment-539852516
+    sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/libimobiledevice/idevice_id
+    sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/libimobiledevice/ideviceinfo
+    sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/usbmuxd/iproxy
+  fi
 
   installFirebase
 
