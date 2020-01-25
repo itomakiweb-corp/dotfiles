@@ -56,7 +56,7 @@ function gitPullOrClone()
 {
   local repositoryUrl="${1:?}"
   local repositoryDir="${MY_GIT}/$(echo ${repositoryUrl##*/} | sed 's/.git//g')"
-  local targetDir="${2}"
+  local targetDir="${2:-''}"
 
   if [ -d "${repositoryDir}" ]; then
     cd "${repositoryDir}"
