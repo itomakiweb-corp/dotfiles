@@ -25,6 +25,7 @@ fi
 set -euo pipefail
 
 # options: default skip
+doReloadBashProfile="false"
 doUpdateBrew="false"
 doUpdateSettingsScreenshot="false"
 doUpdateNvm="false"
@@ -37,6 +38,7 @@ while [ $# -gt 0 ]; do
       set -x
       ;;
     -a|--all)
+      doReloadBashProfile="true"
       doUpdateBrew="true"
       doUpdateSettingsScreenshot="true"
       doUpdateNvm="true"
@@ -90,6 +92,13 @@ function symbolicLink()
       ln -sfnv "${dir}/${path}" "${targetPath}"
     fi
   done
+}
+
+function reloadBashProfile()
+{
+  "${doReloadBashProfile}" || return 0
+
+  \source "${HOME}/.bash_profile"
 }
 
 function installNvm()
@@ -148,6 +157,13 @@ function installFlutter()
   #cd mypj
   #flutter run -d chrome
   #flutter build web
+
+  # at 20200125 work arround
+  # idevice_id cannot run on catalina #42302
+  # https://github.com/flutter/flutter/issues/42302#issuecomment-539852516
+  #sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/libimobiledevice/idevice_id
+  #sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/libimobiledevice/ideviceinfo
+  #sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/usbmuxd/iproxy
 }
 
 function installFirebase()
@@ -185,6 +201,8 @@ if [[ "${uname}" =~ "MINGW" ]]; then
 ### Mac
 
 elif [[ "${uname}" =~ "Darwin" ]]; then
+
+  reloadBashProfile
 
   # install brew
   if which brew; then
@@ -224,20 +242,14 @@ elif [[ "${uname}" =~ "Darwin" ]]; then
   installNvm
 
   installFlutter
-  if "${doUpdateFlutter}"; then
-    # at 20200125 work arround
-    # idevice_id cannot run on catalina #42302
-    # https://github.com/flutter/flutter/issues/42302#issuecomment-539852516
-    sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/libimobiledevice/idevice_id
-    sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/libimobiledevice/ideviceinfo
-    sudo xattr -d com.apple.quarantine ${MY_FLUTTER}/bin/cache/artifacts/usbmuxd/iproxy
-  fi
 
   installFirebase
 
 ### Linux
 
 elif [[ "${uname}" =~ "Linux" ]]; then
+
+  reloadBashProfile
 
   # update os
   #sudo apt update
