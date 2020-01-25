@@ -173,36 +173,15 @@ alias b="vim -S ${MY_VIM_SESSION}"
 
 ## function
 
-### restart
+### reload
 
-# restart yum
-function ry()
+# flutter
+function rf()
 {
-  sudo yum --enablerepo=remi-php74 update
+  cd "${MY_GIT}/flutter"
+  git pull
 }
-export -f ry
-
-# restart iptables
-function ri()
-{
-  # TODO
-  :
-}
-export -f ri
-
-# restart apache
-function ra()
-{
-  sudo service httpd restart
-}
-export -f ra
-
-# restart mysql
-function rs()
-{
-  sudo service mysqld restart
-}
-export -f rs
+export -f rf
 
 ### shortcut
 
