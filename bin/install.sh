@@ -106,7 +106,6 @@ function installNvm()
   # so install manually here
   # https://github.com/nvm-sh/nvm#manual-install
   export NVM_DIR="${HOME}/.config/nvm"
-  mkdir -p "${NVM_DIR}"
   gitPullOrClone "https://github.com/nvm-sh/nvm.git" "${NVM_DIR}"
   cd "${NVM_DIR}"
   #git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
