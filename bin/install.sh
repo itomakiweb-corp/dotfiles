@@ -7,7 +7,7 @@ MY_GIT="${HOME}/git"
 MY_VAR="${HOME}/var"
 MY_REF="${HOME}/ref"
 MY_OLD="${HOME}/old"
-MY_FLUTTER="${HOME}/flutter"
+MY_FLUTTER="${MY_GIT}/flutter"
 PJ_TOP="${MY_GIT}/dotfiles"
 PJ_SRC="${PJ_TOP}/src"
 if [ -n "${GITHUB_TOKEN}" ]; then
