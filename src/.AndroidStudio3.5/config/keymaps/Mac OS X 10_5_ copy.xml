@@ -51,6 +51,15 @@
     <keyboard-shortcut first-keystroke="home" />
     <keyboard-shortcut first-keystroke="meta left" />
   </action>
+  <action id="EditorRight">
+    <keyboard-shortcut first-keystroke="right" />
+  </action>
+  <action id="IncrementalSearch">
+    <keyboard-shortcut first-keystroke="ctrl f" />
+  </action>
+  <action id="List-selectNextColumn">
+    <keyboard-shortcut first-keystroke="right" />
+  </action>
   <action id="NextTab">
     <keyboard-shortcut first-keystroke="shift meta close_bracket" />
     <keyboard-shortcut first-keystroke="ctrl right" />
@@ -62,6 +71,9 @@
     <keyboard-shortcut first-keystroke="shift ctrl tab" />
   </action>
   <action id="Switcher" />
+  <action id="Table-selectNextColumn">
+    <keyboard-shortcut first-keystroke="right" />
+  </action>
   <action id="Vcs.QuickListPopupAction" />
   <action id="android.deploy.ApplyChanges">
     <keyboard-shortcut first-keystroke="ctrl meta r" />
